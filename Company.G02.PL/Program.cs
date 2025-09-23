@@ -1,3 +1,7 @@
+using Company.G02.BLL.Repositories;
+using Company.G02.DAL.Data.Contexts;
+using Microsoft.EntityFrameworkCore;
+
 namespace Company.G02.PL
 {
     public class Program
@@ -8,6 +12,12 @@ namespace Company.G02.PL
 
             // Add services to the container.
             builder.Services.AddControllersWithViews(); // Register Built-in MVC services 
+            builder.Services.AddScoped<DepartmentRepository>(); // Allow DI For DepartmentRepository 
+            builder.Services.AddDbContext<CompanyDbContext>(options =>
+            {
+                options.UseSqlServer("Server = .;Database = CompanyG02 ; Trusted_connection = True;TrustServerCertificate = True");
+
+            });  // Allow DI for CompanyDbContext
 
             var app = builder.Build();
 

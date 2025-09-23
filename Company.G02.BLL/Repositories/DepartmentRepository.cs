@@ -13,7 +13,8 @@ namespace Company.G02.BLL.Repositories
     {
         private readonly CompanyDbContext _context; // Null
 
-        public DepartmentRepository()
+        // Ask CLR Create Object From CompanyDContext 
+        public DepartmentRepository(CompanyDbContext context)
         {
             _context = new CompanyDbContext();
         }
