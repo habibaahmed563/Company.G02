@@ -16,7 +16,7 @@ namespace Company.G02.BLL.Repositories
         // Ask CLR Create Object From CompanyDContext 
         public DepartmentRepository(CompanyDbContext context)
         {
-            _context = new CompanyDbContext();
+            _context = context;
         }
         public IEnumerable<Department> GetAll()
         {

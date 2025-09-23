@@ -15,7 +15,7 @@ namespace Company.G02.PL
             builder.Services.AddScoped<DepartmentRepository>(); // Allow DI For DepartmentRepository 
             builder.Services.AddDbContext<CompanyDbContext>(options =>
             {
-                options.UseSqlServer("Server = .;Database = CompanyG02 ; Trusted_connection = True;TrustServerCertificate = True");
+                options.UseSqlServer(builder.Configuration.GetConnectionString("defaultConnection"));
 
             });  // Allow DI for CompanyDbContext
 
