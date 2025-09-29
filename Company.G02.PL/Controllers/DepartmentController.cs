@@ -55,25 +55,25 @@ namespace Company.G02.PL.Controllers
 
 
         [HttpGet]
-        public IActionResult Details(int? id)
+        public IActionResult Details(int? id,string viewName = "Details")
         {
             if (id is null) return BadRequest("Invalid Id"); // 400
 
             var department = _departmentRepository.Get(id.Value);
             if(department is null) return NotFound(new { StatusCode = 404, Message = $"Department With This Id :{id} is not found" });
 
-            return View(department);
+            return View(viewName ,department);
         }
 
         [HttpGet]
         public IActionResult Edit(int? id)
         {
-            if (id is null) return BadRequest("Invalid Id"); // 400
+            //if (id is null) return BadRequest("Invalid Id"); // 400
 
-            var department = _departmentRepository.Get(id.Value);
-            if (department is null) return NotFound(new { StatusCode = 404, Message = $"Department With This Id :{id} is not found" });
+            //var department = _departmentRepository.Get(id.Value);
+            //if (department is null) return NotFound(new { StatusCode = 404, Message = $"Department With This Id :{id} is not found" });
 
-            return View(department);
+            return Details(id,"Edit");
         }
 
         [HttpPost]
@@ -123,12 +123,12 @@ namespace Company.G02.PL.Controllers
         [HttpGet]
         public IActionResult Delete(int? id)
         {
-            if (id is null) return BadRequest("Invalid Id"); // 400
+            //if (id is null) return BadRequest("Invalid Id"); // 400
 
-            var department = _departmentRepository.Get(id.Value);
-            if (department is null) return NotFound(new { StatusCode = 404, Message = $"Department With This Id :{id} is not found" });
+            //var department = _departmentRepository.Get(id.Value);
+            //if (department is null) return NotFound(new { StatusCode = 404, Message = $"Department With This Id :{id} is not found" });
 
-            return View(department);
+            return Details(id,"Delete");
         }
 
 
