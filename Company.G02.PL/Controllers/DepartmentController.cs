@@ -94,6 +94,7 @@ namespace Company.G02.PL.Controllers
         }
 
 
+        #region [HttpPost]
 
         //[HttpPost]
         //[ValidateAntiForgeryToken]
@@ -116,6 +117,36 @@ namespace Company.G02.PL.Controllers
         //    }
 
         //    return View(model);
-        //}
+        //} 
+        #endregion
+
+        [HttpGet]
+        public IActionResult Delete(int? id)
+        {
+            if (id is null) return BadRequest("Invalid Id"); // 400
+
+            var department = _departmentRepository.Get(id.Value);
+            if (department is null) return NotFound(new { StatusCode = 404, Message = $"Department With This Id :{id} is not found" });
+
+            return View(department);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete([FromRoute] int id, Department department)
+        {
+            if (ModelState.IsValid)
+            {
+                if (id != department.Id) return BadRequest(); //400
+                var count = _departmentRepository.Delete(department);
+                if (count > 0)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+
+            return View(department);
+        }
     }
 }
