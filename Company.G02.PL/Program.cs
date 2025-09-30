@@ -1,3 +1,4 @@
+using Company.G02.BLL.Interfaces;
 using Company.G02.BLL.Repositories;
 using Company.G02.DAL.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,7 @@ namespace Company.G02.PL
             // Add services to the container.
             builder.Services.AddControllersWithViews(); // Register Built-in MVC services 
             builder.Services.AddScoped<DepartmentRepository>(); // Allow DI For DepartmentRepository 
+            builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>(); // Allow DI For EmployeeRepository 
             builder.Services.AddDbContext<CompanyDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("defaultConnection"));
