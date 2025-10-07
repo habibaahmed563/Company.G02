@@ -2,10 +2,6 @@
 @model CreateEmployeeDto
 
 
-@{
-    ViewData["Title"] = "Create";
-}
-
 <h1>Create Employeee </h1>
 <br />
 <br />
@@ -13,11 +9,12 @@
 <form asp-action="Create">
 
     <partial name="EmployeePartialView/_CreateEditPartialView" />
-    <div>
-        <input type="submit" value="Create" class="btn btn-primary"/>
-        <a asp-action="Index" class="btn btn-light"> Back To List </a>
-    </div>
+
 </form>
+<div>
+    <input type="submit" value="Create" class="btn btn-primary" />
+    <a asp-action="Index" class="btn btn-light"> Back To List </a>
+</div>
 
 @section ValidationSection {
 

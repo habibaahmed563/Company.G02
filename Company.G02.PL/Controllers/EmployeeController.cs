@@ -9,12 +9,14 @@ namespace Company.G02.PL.Controllers
     public class EmployeeController : Controller
     {
         private readonly IEmployeeRepository _employeeRepository;
+        private readonly IDepartmentRepositories _departmentRepository;
 
         //Ask CLR Create oject From IEmployeeRepository
 
-        public EmployeeController(IEmployeeRepository employeeRepository)
+        public EmployeeController(IEmployeeRepository employeeRepository,IDepartmentRepositories departmentRepositories)
         {
             _employeeRepository = employeeRepository;
+            _departmentRepository = departmentRepositories;
         }
         [HttpGet] // Get : /Department/Index
         public IActionResult Index()
@@ -33,6 +35,8 @@ namespace Company.G02.PL.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            var departments = _departmentRepository.GetAll();
+            ViewData["departments"] = departments;
             return View();
         }
 
