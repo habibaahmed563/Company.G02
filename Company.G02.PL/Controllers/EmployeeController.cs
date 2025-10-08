@@ -1,4 +1,5 @@
-﻿using Company.G02.BLL.Interfaces;
+﻿using AutoMapper;
+using Company.G02.BLL.Interfaces;
 using Company.G02.BLL.Repositories;
 using Company.G02.DAL.Models;
 using Company.G02.PL.Dtos;
@@ -11,13 +12,19 @@ namespace Company.G02.PL.Controllers
     {
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IDepartmentRepositories _departmentRepository;
+        private readonly IMapper _mapper;
 
         //Ask CLR Create oject From IEmployeeRepository
 
-        public EmployeeController(IEmployeeRepository employeeRepository,IDepartmentRepositories departmentRepositories)
+        public EmployeeController
+            (IEmployeeRepository employeeRepository,
+            IDepartmentRepositories departmentRepositories,
+            IMapper mapper
+            )
         {
             _employeeRepository = employeeRepository;
             _departmentRepository = departmentRepositories;
+            _mapper = mapper;
         }
         [HttpGet] // Get : /Department/Index
         public IActionResult Index(string? SearchInout)
@@ -54,20 +61,22 @@ namespace Company.G02.PL.Controllers
         {
             if (ModelState.IsValid) // Server Side Validation
             {
-                var employee = new Employee()
-                {
-                    Name = model.Name,
-                    Address = model.Address,
-                    Age = model.Age,
-                    CreateAt = model.CreateAt,
-                    HiringDate = model.HiringDate,
-                    Email = model.Email,
-                    IsActive = model.IsActive,
-                    IsDeleted = model.IsDeleted,
-                    Phone = model.Phone,
-                    Salary = model.Salary,
-                    DepartmentId = model.DepartmentId
-                };
+                // Manual Mapping 
+                //var employee = new Employee()
+                //{
+                //    Name = model.Name,
+                //    Address = model.Address,
+                //    Age = model.Age,
+                //    CreateAt = model.CreateAt,
+                //    HiringDate = model.HiringDate,
+                //    Email = model.Email,
+                //    IsActive = model.IsActive,
+                //    IsDeleted = model.IsDeleted,
+                //    Phone = model.Phone,
+                //    Salary = model.Salary,
+                //    DepartmentId = model.DepartmentId
+                //};
+                var employee = _mapper.Map<Employee>(model);
                 var count = _employeeRepository.Add(employee);
                 if (count > 0)
                 {
@@ -81,14 +90,14 @@ namespace Company.G02.PL.Controllers
 
 
         [HttpGet]
-        public IActionResult Details(int? id, string viewName = "Details")
+        public IActionResult Details(int? id)
         {
             if (id is null) return BadRequest("Invalid Id"); // 400
 
             var employee = _employeeRepository.Get(id.Value);
             if (employee is null) return NotFound(new { StatusCode = 404, Message = $"Employee With This Id :{id} is not found" });
-
-            return View(viewName, employee);
+           
+            return View(employee);
         }
 
         [HttpGet]
@@ -100,8 +109,9 @@ namespace Company.G02.PL.Controllers
 
             var employee = _employeeRepository.Get(id.Value);
             if (employee is null) return NotFound(new { StatusCode = 404, Message = $"Employee With This Id :{id} is not found" });
+            var dto = _mapper.Map<CreateEmployeeDto>(employee);
 
-            return View(employee);
+            return View(dto);
         }
 
         [HttpPost]
@@ -151,12 +161,12 @@ namespace Company.G02.PL.Controllers
         [HttpGet]
         public IActionResult Delete(int? id)
         {
-            //if (id is null) return BadRequest("Invalid Id"); // 400
+            if (id is null) return BadRequest("Invalid Id"); // 400
 
-            //var department = _departmentRepository.Get(id.Value);
-            //if (department is null) return NotFound(new { StatusCode = 404, Message = $"Department With This Id :{id} is not found" });
+            var department = _departmentRepository.Get(id.Value);
+            if (department is null) return NotFound(new { StatusCode = 404, Message = $"Department With This Id :{id} is not found" });
 
-            return Details(id, "Delete");
+            return View(department);
         }
 
 
