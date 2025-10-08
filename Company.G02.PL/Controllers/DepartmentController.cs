@@ -1,4 +1,5 @@
-﻿using Company.G02.BLL.Repositories;
+﻿using Company.G02.BLL.Interfaces;
+using Company.G02.BLL.Repositories;
 using Company.G02.DAL.Models;
 using Company.G02.PL.Dtos;
 using Microsoft.AspNetCore.Mvc;
@@ -9,18 +10,17 @@ namespace Company.G02.PL.Controllers
     // MVC Controller 
     public class DepartmentController : Controller
     {
-        private readonly DepartmentRepository _departmentRepository;
+        private readonly IDepartmentRepositories _departmentRepository;
 
         //Ask CLR Create oject From DepartmentRepository
 
-        public DepartmentController(DepartmentRepository departmentRepository)
+        public DepartmentController(IDepartmentRepositories departmentRepository)
         {
             _departmentRepository = departmentRepository;
         }
         [HttpGet] // Get : /Department/Index
         public IActionResult Index()
         {
-            DepartmentRepository departmentRepository = _departmentRepository;
             var departments = _departmentRepository.GetAll();
 
             return View(departments);

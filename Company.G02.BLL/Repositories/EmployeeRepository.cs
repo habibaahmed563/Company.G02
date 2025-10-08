@@ -1,6 +1,7 @@
 ﻿using Company.G02.BLL.Interfaces;
 using Company.G02.DAL.Data.Contexts;
 using Company.G02.DAL.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +14,14 @@ namespace Company.G02.BLL.Repositories
     {
         public EmployeeRepository(CompanyDbContext context) : base(context) // Ask CLR Create Oject From CompanyDbContext
         {
-            
+            _Context = context;
         }
 
+        private readonly CompanyDbContext _Context;
+
+        public List<Employee>? GetByName(string name)
+        {
+            return _Context.Employees.Include(E=>E.Department).Where(E => E.Name.ToLower().Contains(name.ToLower())).ToList();
+        }
     }
 }

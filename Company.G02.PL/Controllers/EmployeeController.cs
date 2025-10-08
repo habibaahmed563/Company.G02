@@ -20,17 +20,25 @@ namespace Company.G02.PL.Controllers
             _departmentRepository = departmentRepositories;
         }
         [HttpGet] // Get : /Department/Index
-        public IActionResult Index()
+        public IActionResult Index(string? SearchInout)
         {
-            var employees = _employeeRepository.GetAll();
-            // Dictionary : 3 Property
-            // 1.ViewData : Transfer Extra Information From Controller (Action) To View
-            //ViewData["Message"] = "Hello From ViewData";
+            IEnumerable<Employee> employees;
+            if(string.IsNullOrEmpty(SearchInout))
+            {
+                employees = _employeeRepository.GetAll();
+            }
+            else
+            {
+                employees = _employeeRepository.GetByName(SearchInout);
+            }
+                // Dictionary : 3 Property
+                // 1.ViewData : Transfer Extra Information From Controller (Action) To View
+                //ViewData["Message"] = "Hello From ViewData";
 
-            // 2.ViewBag  : Transfer Extra Information From Controller (Action) To View
-            //ViewBag.Message = "Hello From ViewBag";
+                // 2.ViewBag  : Transfer Extra Information From Controller (Action) To View
+                //ViewBag.Message = "Hello From ViewBag";
 
-            return View(employees);
+                return View(employees);
         }
 
         [HttpGet]
