@@ -1,10 +1,12 @@
-﻿using System.ComponentModel;
+﻿using Company.G02.DAL.Models;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Company.G02.PL.Dtos
 {
     public class CreateEmployeeDto
     {
+        public int Id { get; set; }
         [Required(ErrorMessage = "Name is Required !!")]
         public string Name { get; set; }
 
@@ -30,5 +32,7 @@ namespace Company.G02.PL.Dtos
         [DisplayName("Date Of Creation")]
         public DateTime CreateAt { get; set; }
         public int? DepartmentId { get; set; }
+        public string? DepartmentName { get; set; }
+
     }
 }

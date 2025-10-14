@@ -6,7 +6,7 @@
 let InputSearch = document.getElementById("SearchInput");
 InputSearch.addEventListener("keyup", () => {
     let xhr = new XMLHttpRequest();
-    let url = 'https://localhost:44326/Employee?SearchInput=${InputSearch.value}';
+    let url = 'https://localhost:44326/Employee?SearchInput=${SearchInput.value}';
     xhr.open("GET", url, true);
 
     xhr.onreadystatechange = function () {

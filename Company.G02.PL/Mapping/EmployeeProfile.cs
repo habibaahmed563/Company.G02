@@ -11,6 +11,7 @@ namespace Company.G02.PL.Mapping
         {
             CreateMap<CreateEmployeeDto, Employee>();
             CreateMap<Employee, CreateEmployeeDto>();
+                
         }
     }
 }
