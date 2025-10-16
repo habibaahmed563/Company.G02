@@ -24,14 +24,14 @@ namespace Company.G02.BLL
             EmployeeRepository = new EmployeeRepository(_Context);
         }
 
-        public int Complete()
+        public async Task<int> CompleteAsync()
         {
-            return _Context.SaveChanges();
+            return await _Context.SaveChangesAsync();
         }
 
-        public void Dispose()
+        public async ValueTask DisposeAsync()
         {
-            _Context.Dispose();
+           await _Context.DisposeAsync();
         }
     }
 }
