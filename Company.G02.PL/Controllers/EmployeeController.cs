@@ -119,6 +119,15 @@ namespace Company.G02.PL.Controllers
         {
             if (ModelState.IsValid)
             {
+                if(model.ImageName is not null && model.Image is not null)
+                {
+                    DocumentSettings.DeleteFile(model.ImageName, "images");
+                }
+                if(model.Image is not null)
+                {
+                   model.ImageName = DocumentSettings.UploadFile(model.Image, "images");
+                }
+
                 var employee = _mapper.Map<Employee>(model);
                 employee.Id = id;
                  _unitOfwork.EmployeeRepository.Update(employee);
@@ -182,6 +191,10 @@ namespace Company.G02.PL.Controllers
                 var count = _unitOfwork.Complete();
                 if (count > 0)
                 {
+                    if(model.ImageName is not null)
+                    {
+                        DocumentSettings.DeleteFile(model.ImageName, "images");
+                    }
                     return RedirectToAction(nameof(Index));
                 }
             }
