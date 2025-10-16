@@ -3,6 +3,7 @@ using Company.G02.BLL.Interfaces;
 using Company.G02.BLL.Repositories;
 using Company.G02.DAL.Models;
 using Company.G02.PL.Dtos;
+using Company.G02.PL.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 
@@ -65,6 +66,11 @@ namespace Company.G02.PL.Controllers
         {
             if (ModelState.IsValid) // Server Side Validation
             {
+                if (model.Image is not null)
+                {
+                    model.ImageName = DocumentSettings.UploadFile(model.Image, "images");
+                }
+
                 var employee = _mapper.Map<Employee>(model);
                 _unitOfwork.EmployeeRepository.Add(employee);
                 var count = _unitOfwork.Complete();
