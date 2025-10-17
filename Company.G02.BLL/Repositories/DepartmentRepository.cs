@@ -11,10 +11,14 @@ namespace Company.G02.BLL.Repositories
 {
     public class DepartmentRepository : GenericRepository<Department>, IDepartmentRepositories
     {
+        private readonly CompanyDbContext _context;
         public DepartmentRepository(CompanyDbContext context) : base(context)
         {
-            
+            _context = context;
         }
-
+        public async Task<Department?> GetByIdAsync(int id)
+        {
+            return await _context.Departments.FindAsync(id);
+        }
     }
 }

@@ -7,14 +7,14 @@
 <br />
 
 <form asp-action="Create" enctype="multipart/form-data">
-
+    @Html.AntiForgeryToken()
     <partial name="EmployeePartialView/_CreateEditPartialView" />
+    <div>
+        <input type="submit" class="btn btn-primary" value="Create"/>
+        <a class="btn btn-light" asp-action="Index">Back To List</a>
+    </div>
 
 </form>
-<div>
-    <input type="submit"  class="btn btn-primary" value="Create" />
-    <a class="btn btn-light" asp-action="Index">  Back To List </a>
-</div>
 
 @section ValidationSection {
 
