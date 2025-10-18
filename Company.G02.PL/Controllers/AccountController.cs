@@ -67,6 +67,37 @@ namespace Company.G02.PL.Controllers
 
         #region SignIn
 
+        [HttpGet]
+        public IActionResult SignIn()
+        {
+            return View();
+        }
+
+        // P@ssWord1
+
+        [HttpPost]
+        public async Task<IActionResult> SignIn(SignInDto model)
+        {
+            if(ModelState.IsValid)
+            {
+               var user = await _UserManager.FindByEmailAsync(model.Email);
+                if(user is not null)
+                {
+                    var flag = await _UserManager.CheckPasswordAsync(user, model.Password);
+                    if(flag)
+                    {
+                        // Sign In
+                        return RedirectToAction(nameof(HomeController.Index), "Home");
+                    }
+                }
+
+                ModelState.AddModelError("", "Invalid Login !");
+            }
+
+
+            return View(model);
+        }
+
         #endregion
 
         #region SignOut
