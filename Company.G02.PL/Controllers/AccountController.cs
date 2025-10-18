@@ -68,6 +68,7 @@ namespace Company.G02.PL.Controllers
 
         #endregion
 
+
         #region SignIn
 
         [HttpGet]
@@ -107,7 +108,16 @@ namespace Company.G02.PL.Controllers
 
         #endregion
 
+
         #region SignOut
+
+        [HttpGet]
+        public new async Task<IActionResult> SignOut()
+        {
+           await _signInManager.SignOutAsync();
+            return RedirectToAction(nameof(SignIn));
+        }
+
 
         #endregion
     }
