@@ -34,6 +34,12 @@ namespace Company.G02.PL
             builder.Services.AddIdentity<AppUser, IdentityRole>()
                             .AddEntityFrameworkStores<CompanyDbContext>();
 
+            builder.Services.ConfigureApplicationCookie(config =>
+            {
+                config.LoginPath = "/Account/SignIn";
+            });
+
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -49,6 +55,8 @@ namespace Company.G02.PL
 
             app.UseRouting();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",

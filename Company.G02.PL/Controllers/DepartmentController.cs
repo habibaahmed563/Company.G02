@@ -3,6 +3,7 @@ using Company.G02.BLL.Interfaces;
 using Company.G02.BLL.Repositories;
 using Company.G02.DAL.Models;
 using Company.G02.PL.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 namespace Company.G02.PL.Controllers
 {
     // MVC Controller 
+    [Authorize]
     public class DepartmentController : Controller
     {
         //private readonly IDepartmentRepositories _departmentRepository;

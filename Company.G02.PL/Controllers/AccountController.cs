@@ -9,9 +9,12 @@ namespace Company.G02.PL.Controllers
     public class AccountController : Controller
     {
         private readonly UserManager<AppUser> _UserManager;
-        public AccountController(UserManager<AppUser> userManager)
+        private readonly SignInManager<AppUser> _signInManager;
+
+        public AccountController(UserManager<AppUser> userManager ,SignInManager<AppUser> signInManager)
         {
             _UserManager = userManager;
+            _signInManager = signInManager;
         }
 
         #region SignUp
@@ -75,7 +78,7 @@ namespace Company.G02.PL.Controllers
 
         // P@ssWord1
 
-        [HttpPost]
+        [HttpPost] // Account/SignIn
         public async Task<IActionResult> SignIn(SignInDto model)
         {
             if(ModelState.IsValid)
@@ -87,7 +90,11 @@ namespace Company.G02.PL.Controllers
                     if(flag)
                     {
                         // Sign In
-                        return RedirectToAction(nameof(HomeController.Index), "Home");
+                        var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
+                        if(result.Succeeded)
+                        {
+                            return RedirectToAction(nameof(HomeController.Index), "Home");
+                        }
                     }
                 }
 
