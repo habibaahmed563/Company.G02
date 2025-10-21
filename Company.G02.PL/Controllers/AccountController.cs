@@ -109,7 +109,6 @@ namespace Company.G02.PL.Controllers
 
         #endregion
 
-
         #region SignOut
 
         [HttpGet]
@@ -172,5 +171,41 @@ namespace Company.G02.PL.Controllers
         }
 
         #endregion
+
+        #region Reset PassWord
+
+        [HttpGet]
+        public IActionResult ResetPassword(string email, string token)
+        {
+            TempData["email"] = email;
+            TempData["token"] = token;
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordDto model)
+        {
+            if(ModelState.IsValid)
+            {
+                var email = TempData["email"] as string;
+                var token = TempData["token"] as string;
+
+                if (email is null || token is null) return BadRequest("Invalid Operation");
+                var user = await _UserManager.FindByEmailAsync(email);
+                if(user is not null)
+                {
+                    var result = await _UserManager.ResetPasswordAsync(user, token, model.NewPassword);
+                    if(result.Succeeded)
+                    {
+                        return RedirectToAction("SignIn");
+                    }
+                }
+                ModelState.AddModelError("", "Invalid Reset Passsword Operation");
+            }
+            return View();
+        }
+
+        #endregion
+
     }
 }
