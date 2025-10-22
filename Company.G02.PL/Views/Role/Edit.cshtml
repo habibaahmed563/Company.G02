@@ -1,0 +1,23 @@
+﻿@model RoleToReturnDto 
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit Role</h1>
+<br />
+<br />
+
+<form asp-action="Edit">
+    <partial name="EmployeePartialView/_CreateEditPartialView" />
+
+    <div>
+        <input type="submit" class="btn btn-primary" value="Save"/>
+        <a class="btn btn-light" asp-action="Index">Back To List</a>
+    </div>
+
+</form>
+
+@section ValidationSection {
+
+    <partial name="_ValidationScriptsPartial"/>
+}
