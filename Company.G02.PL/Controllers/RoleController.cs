@@ -1,18 +1,24 @@
 ﻿using Company.G02.DAL.Models;
 using Company.G02.PL.Dtos;
 using Company.G02.PL.Helpers;
+using Company.G02.PL.Views;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.General;
+using System.Threading.Tasks;
 
 namespace Company.G02.PL.Controllers
 {
     public class RoleController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<AppUser> _userManager;
 
-        public RoleController(RoleManager<IdentityRole> roleManager)
+        public RoleController(RoleManager<IdentityRole> roleManager, UserManager<AppUser> userManager)
         {
             _roleManager = roleManager;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -145,5 +151,35 @@ namespace Company.G02.PL.Controllers
 
             return View(model);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> AddOrRemoveUsers(string roleId)
+        {
+           var role = await _roleManager.FindByIdAsync(roleId);
+            if(role is null)
+                return NotFound();
+            var usersInRole = new List<UsersInRoleViewModel>();
+            var users = await _userManager.Users.ToListAsync();
+
+            foreach(var user in users)
+            {
+                var userInRole = new UsersInRoleViewModel()
+                {
+                    UserId = user.Id,
+                    UserName = user.UserName,
+                };
+                if(await _userManager.IsInRoleAsync(user,role.Name))
+                {
+                    userInRole.IsSelected = true;
+                }
+                else
+                {
+                    userInRole.IsSelected = false;
+                }
+                usersInRole.Add(userInRole);
+            }
+            return View(usersInRole);
+        }
+
     }
 }
